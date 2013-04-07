@@ -2,7 +2,7 @@
 {
     public interface IRepository
     {
-        IEntityRepository Entities { get; set; }
-        IEntityTypeRepository EntityTypes { get; set; }
+        IEntityRepository Entities { get; }
+        IEntityTypeRepository EntityTypes { get; }
     }
 }
