@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hsc.SqlRepository", "Source
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hsc.TestApplication", "Source\Hsc.TestApplication\Hsc.TestApplication.csproj", "{EDCCD271-445E-49B5-8FA0-FC324E28D25F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EF66DA8B-267A-4132-8561-BFCFE8EFCAE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -122,5 +124,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BC76548F-FE05-477B-9B8F-05B99FE6DF61} = {EF66DA8B-267A-4132-8561-BFCFE8EFCAE1}
+		{946F0065-CACD-4B6E-A921-31DD370C38F2} = {EF66DA8B-267A-4132-8561-BFCFE8EFCAE1}
 	EndGlobalSection
 EndGlobal
