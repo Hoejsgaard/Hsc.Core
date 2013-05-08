@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Text;
 using Hsc.Model.Knowledge;
 using Hsc.Model.Operation;
+using Attribute = Hsc.Model.Operation.Attribute;
 
 namespace Hsc.SqlRepository.Instance
 {
@@ -15,19 +16,19 @@ namespace Hsc.SqlRepository.Instance
         {
             _connectionProvider = connectionProvider;
         }
-        
+
         public int Create(Entity entity)
         {
             if (entity.Id != 0)
             {
                 return entity.Id;
             }
-            using (var connection = _connectionProvider.GetConnection())
+            using (SqlConnection connection = _connectionProvider.GetConnection())
             {
-                using (var command = connection.CreateCommand())
+                using (SqlCommand command = connection.CreateCommand())
                 {
                     command.CommandText = CreateBaseAttributesQuery(entity);
-                    var id = (int)command.ExecuteScalar();
+                    var id = (int) command.ExecuteScalar();
                     entity.Id = id;
 
                     command.CommandText = CreateReferenceAttributesQuery(entity);
@@ -35,6 +36,44 @@ namespace Hsc.SqlRepository.Instance
                 }
             }
             return entity.Id;
+        }
+
+        public void Update(Entity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(EntityType entityType, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Entity Read(EntityType entityType, int id)
+        {
+            return Get(entityType, id, new List<Entity>());
+        }
+
+        public List<Entity> ReadAll(EntityType entityType)
+        {
+            var entities = new List<Entity>();
+            using (SqlConnection sqlConnection = _connectionProvider.GetConnection())
+            {
+                using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
+                {
+                    sqlCommand.CommandText = string.Format("SELECT * FROM exi.{0}", entityType.Name);
+                    using (SqlDataReader reader = sqlCommand.ExecuteReader())
+                    {
+                        var loadedEntitites = new List<Entity>();
+                        while (reader.Read())
+                        {
+                            Entity entity = ReadEntity(reader, entityType, loadedEntitites);
+                            entities.Add(entity);
+                        }
+                    }
+                }
+            }
+
+            return entities;
         }
 
         private string CreateReferenceAttributesQuery(Entity entity)
@@ -45,11 +84,11 @@ namespace Hsc.SqlRepository.Instance
         private string CreateReferenceKeyValues(Entity entity)
         {
             var stringBuilder = new StringBuilder();
-            foreach (var attribute in entity.Attributes)
+            foreach (Attribute attribute in entity.Attributes)
             {
                 if (attribute.AttributeType.DataType == DataType.Entity)
                 {
-                    var childEntity = (Entity)attribute.Value;
+                    var childEntity = (Entity) attribute.Value;
                     if (childEntity.Id == 0)
                     {
                         Create(childEntity);
@@ -62,16 +101,16 @@ namespace Hsc.SqlRepository.Instance
 
         private string CreateBaseAttributesQuery(Entity entity)
         {
-            return string.Format("INSERT INTO exi.{0} ({1}) OUTPUT inserted.Id VALUES ({2})", 
-                entity.EntityType.Name, 
-                GetColumns(entity.Attributes), 
-                GetValues(entity.Attributes));
+            return string.Format("INSERT INTO exi.{0} ({1}) OUTPUT inserted.Id VALUES ({2})",
+                                 entity.EntityType.Name,
+                                 GetColumns(entity.Attributes),
+                                 GetValues(entity.Attributes));
         }
-        
+
         private object GetValues(AttributeCollection attributes)
         {
             var stringBuilder = new StringBuilder();
-            foreach (var attribute in attributes)
+            foreach (Attribute attribute in attributes)
             {
                 if (attribute.AttributeType.DataType != DataType.Entity)
                 {
@@ -79,13 +118,13 @@ namespace Hsc.SqlRepository.Instance
                 }
             }
             string query = stringBuilder.ToString();
-            return query.Substring(0, query.Length - 2);            
+            return query.Substring(0, query.Length - 2);
         }
 
         private string GetColumns(AttributeCollection attributes)
         {
             var stringBuilder = new StringBuilder();
-            foreach (var attribute in attributes)
+            foreach (Attribute attribute in attributes)
             {
                 if (attribute.AttributeType.DataType != DataType.Entity)
                 {
@@ -94,21 +133,6 @@ namespace Hsc.SqlRepository.Instance
             }
             string query = stringBuilder.ToString();
             return query.Substring(0, query.Length - 2);
-        }
-
-        public void Update(Entity entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(EntityType entityType, int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Entity Read(EntityType entityType, int id)
-        {
-            return Get(entityType, id, new List<Entity>());
         }
 
         public Entity Get(EntityType entityType, int id, List<Entity> loadingEntities)
@@ -121,7 +145,7 @@ namespace Hsc.SqlRepository.Instance
                     using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                     {
                         sqlCommand.CommandText = string.Format("SELECT * FROM exi.{0} WHERE Id={1}", entityType.Name, id);
-                        using (var reader = sqlCommand.ExecuteReader())
+                        using (SqlDataReader reader = sqlCommand.ExecuteReader())
                         {
                             reader.Read();
                             entity = ReadEntity(reader, entityType, loadingEntities);
@@ -146,7 +170,7 @@ namespace Hsc.SqlRepository.Instance
                 }
                 if (entityType.Attributes[field].DataType == DataType.Entity)
                 {
-                    var entityAttributeType = (EntityAttributeType)entityType.Attributes[field];
+                    var entityAttributeType = (EntityAttributeType) entityType.Attributes[field];
                     Entity child = Get(entityAttributeType.OfType, (int) reader[field], loadingEntities);
                     entity.Attributes[field].Value = child;
                 }
@@ -155,7 +179,7 @@ namespace Hsc.SqlRepository.Instance
                     entity.Attributes[field].Value = reader[field];
                 }
             }
-            
+
             return entity;
         }
 
@@ -169,29 +193,6 @@ namespace Hsc.SqlRepository.Instance
                 }
             }
             return null;
-        }
-
-        public List<Entity> ReadAll(EntityType entityType)
-        {
-            var entities = new List<Entity>();
-            using (SqlConnection sqlConnection = _connectionProvider.GetConnection())
-            {
-                using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
-                {
-                    sqlCommand.CommandText = string.Format("SELECT * FROM exi.{0}", entityType.Name);
-                    using (var reader = sqlCommand.ExecuteReader())
-                    {
-                        var loadedEntitites = new List<Entity>();
-                        while (reader.Read())
-                        {
-                            Entity entity = ReadEntity(reader, entityType, loadedEntitites);
-                            entities.Add(entity);
-                        }
-                    }
-                }
-            }
-
-            return entities;
         }
 
         private List<string> GetAttributes(SqlDataReader reader)

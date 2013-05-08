@@ -3,7 +3,7 @@
 namespace Hsc.Foundation.Log
 {
     /// <summary>
-    /// Convenient builder for fluent logging. Remember to end your train with a call to Write().
+    ///     Convenient builder for fluent logging. Remember to end your train with a call to Write().
     /// </summary>
     /// <remarks>Fluent interfaces break SRP and DRY for general convenience.</remarks>
     public class LogEntryBuilder

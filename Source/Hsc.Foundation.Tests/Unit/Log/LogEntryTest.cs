@@ -5,58 +5,18 @@ using NUnit.Framework;
 namespace Hsc.Foundation.Tests.Unit.Log
 {
     [TestFixture]
-    class LogEntryTest
+    internal class LogEntryTest
     {
         private LogEntry GetPopulatedLogEntry()
         {
             return new LogEntry
-            {
-                Message = "Testmessage",
-                Cause = "Testcause",
-                Resolution = "Testresolution",
-                EventId = 42,
-                Exception = new FormatException("Exceptionmessage")
-            };
-        }
-
-        [Test]
-        public void ToString_IncludeMessage()
-        {
-            LogEntry logEntry = GetPopulatedLogEntry();
-
-            string stringRepresentation = logEntry.ToString();
-
-            Assert.That(stringRepresentation.Contains("Testmessage"));
-        }
-
-        [Test]
-        public void ToString_IncludeCause()
-        {
-            LogEntry logEntry = GetPopulatedLogEntry();
-
-            string stringRepresentation = logEntry.ToString();
-
-            Assert.That(stringRepresentation.Contains("Testcause"));
-        }
-
-        [Test]
-        public void ToString_IncludeResolution()
-        {
-            LogEntry logEntry = GetPopulatedLogEntry();
-
-            string stringRepresentation = logEntry.ToString();
-
-            Assert.That(stringRepresentation.Contains("Testresolution"));
-        }
-
-        [Test]
-        public void ToString_IncludeEventId()
-        {
-            LogEntry logEntry = GetPopulatedLogEntry();
-
-            string stringRepresentation = logEntry.ToString();
-
-            Assert.That(stringRepresentation.Contains("42"));
+                       {
+                           Message = "Testmessage",
+                           Cause = "Testcause",
+                           Resolution = "Testresolution",
+                           EventId = 42,
+                           Exception = new FormatException("Exceptionmessage")
+                       };
         }
 
         [Test]
@@ -70,13 +30,23 @@ namespace Hsc.Foundation.Tests.Unit.Log
         }
 
         [Test]
-        public void ToString_IncludeException_WhenPassingTrue()
+        public void ToString_IncludeCause()
         {
             LogEntry logEntry = GetPopulatedLogEntry();
 
-            string stringRepresentation = logEntry.ToString(true);
+            string stringRepresentation = logEntry.ToString();
 
-            Assert.That(stringRepresentation.Contains("Exceptionmessage"));
+            Assert.That(stringRepresentation.Contains("Testcause"));
+        }
+
+        [Test]
+        public void ToString_IncludeEventId()
+        {
+            LogEntry logEntry = GetPopulatedLogEntry();
+
+            string stringRepresentation = logEntry.ToString();
+
+            Assert.That(stringRepresentation.Contains("42"));
         }
 
         [Test]
@@ -90,13 +60,33 @@ namespace Hsc.Foundation.Tests.Unit.Log
         }
 
         [Test]
-        public void ToString_ReturnsEmptyString_WhenLogEntryIsEmpty()
+        public void ToString_IncludeException_WhenPassingTrue()
         {
-            LogEntry logEntry = new LogEntry();
+            LogEntry logEntry = GetPopulatedLogEntry();
+
+            string stringRepresentation = logEntry.ToString(true);
+
+            Assert.That(stringRepresentation.Contains("Exceptionmessage"));
+        }
+
+        [Test]
+        public void ToString_IncludeMessage()
+        {
+            LogEntry logEntry = GetPopulatedLogEntry();
 
             string stringRepresentation = logEntry.ToString();
 
-            Assert.IsEmpty(stringRepresentation);
+            Assert.That(stringRepresentation.Contains("Testmessage"));
+        }
+
+        [Test]
+        public void ToString_IncludeResolution()
+        {
+            LogEntry logEntry = GetPopulatedLogEntry();
+
+            string stringRepresentation = logEntry.ToString();
+
+            Assert.That(stringRepresentation.Contains("Testresolution"));
         }
 
         [Test]
@@ -104,7 +94,7 @@ namespace Hsc.Foundation.Tests.Unit.Log
         {
             LogEntry logEntry = GetPopulatedLogEntry();
 
-            
+
             string stringRepresentation = logEntry.ToString();
             string expectedSerializationFormat = "\r\n" +
                                                  "EVENT ID : 42\r\n\r\n" +
@@ -112,8 +102,18 @@ namespace Hsc.Foundation.Tests.Unit.Log
                                                  "CAUSE : Testcause\r\n\r\n" +
                                                  "RESOLUTION : Testresolution\r\n\r\n" +
                                                  "EXCEPTION : System.FormatException: Exceptionmessage\r\n";
-            
+
             Assert.AreEqual(expectedSerializationFormat, stringRepresentation);
+        }
+
+        [Test]
+        public void ToString_ReturnsEmptyString_WhenLogEntryIsEmpty()
+        {
+            var logEntry = new LogEntry();
+
+            string stringRepresentation = logEntry.ToString();
+
+            Assert.IsEmpty(stringRepresentation);
         }
     }
 }

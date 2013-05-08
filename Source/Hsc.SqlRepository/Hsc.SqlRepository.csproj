@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="HardcodedConnectionProvider.cs" />
     <Compile Include="DataTypeConverter.cs" />
+    <Compile Include="IDataTypeConverter.cs" />
     <Compile Include="Instance\AttributeRepository.cs" />
     <Compile Include="Instance\ISqlAttributeRepository.cs" />
     <Compile Include="Instance\ISqlEntityRepository.cs" />

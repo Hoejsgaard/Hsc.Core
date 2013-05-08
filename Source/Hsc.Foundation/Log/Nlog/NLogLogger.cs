@@ -1,23 +1,22 @@
 ﻿using System;
-using NLog;
 using System.Collections.Generic;
+using NLog;
 
 namespace Hsc.Foundation.Log.Nlog
 {
     /// <summary>
-    ///   NLog implementation of <see cref="ILogger" />.
+    ///     NLog implementation of <see cref="ILogger" />.
     /// </summary>
     public class NLogLogger : ILogger
     {
-        private readonly INLogConfigurationRepository _nlogConfigurationRepository;
         private readonly ILogEventInfoSplitter _logEventInfoSplitter;
+        private readonly INLogConfigurationRepository _nlogConfigurationRepository;
         private Logger _logger;
 
 
         public NLogLogger(INLogConfigurationRepository nlogConfigurationRepository,
                           ILogEventInfoSplitter logEventInfoSplitter)
         {
-
             _nlogConfigurationRepository = nlogConfigurationRepository;
             _nlogConfigurationRepository.OnConfigurationChanged += OnConfigurationRepositoryChanged;
             _logEventInfoSplitter = logEventInfoSplitter;
@@ -25,22 +24,11 @@ namespace Hsc.Foundation.Log.Nlog
             GetLoggerFromRepository();
         }
 
-        private void GetLoggerFromRepository()
-        {
-            LogManager.Configuration = _nlogConfigurationRepository.GetConfiguration();
-            _logger = LogManager.GetCurrentClassLogger();
-        }
-
-        private void OnConfigurationRepositoryChanged(object sender, EventArgs args)
-        {
-            GetLoggerFromRepository();
-        }
-
         public void Flush()
         {
             LogManager.Flush();
         }
-        
+
         public void Write(LogEntry entry)
         {
             if (entry == null)
@@ -54,17 +42,28 @@ namespace Hsc.Foundation.Log.Nlog
             Write(logEventInfos);
         }
 
+        private void GetLoggerFromRepository()
+        {
+            LogManager.Configuration = _nlogConfigurationRepository.GetConfiguration();
+            _logger = LogManager.GetCurrentClassLogger();
+        }
+
+        private void OnConfigurationRepositoryChanged(object sender, EventArgs args)
+        {
+            GetLoggerFromRepository();
+        }
+
         private void Write(IEnumerable<LogEventInfo> events)
         {
-            foreach (var logEventInfo in events)
+            foreach (LogEventInfo logEventInfo in events)
             {
-                _logger.Log(typeof(NLogLogger), logEventInfo);
+                _logger.Log(typeof (NLogLogger), logEventInfo);
             }
         }
 
         private LogEventInfo Convert(LogEntry entry)
         {
-            var logEventInfo = new LogEventInfo { Message = entry.ToString() };
+            var logEventInfo = new LogEventInfo {Message = entry.ToString()};
             switch (entry.Level)
             {
                 case LogLevel.Trace:
@@ -100,6 +99,5 @@ namespace Hsc.Foundation.Log.Nlog
 
             return logEventInfo;
         }
-
     }
 }

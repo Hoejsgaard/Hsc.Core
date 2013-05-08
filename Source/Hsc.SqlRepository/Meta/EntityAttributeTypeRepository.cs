@@ -87,7 +87,6 @@ namespace Hsc.SqlRepository.Meta
                                                            _dataTypeConverter.ToSqlType(DataType.Entity));
                     sqlCommand.ExecuteNonQuery();
                 }
-
             }
         }
 

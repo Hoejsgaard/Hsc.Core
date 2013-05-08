@@ -2,9 +2,7 @@
 {
     public class EntityAttributeType : AttributeType
     {
-        public EntityType OfType { get; set; }
-
-        public EntityAttributeType ()
+        public EntityAttributeType()
         {
             DataType = DataType.Entity;
         }
@@ -13,5 +11,7 @@
         {
             OfType = ofType;
         }
+
+        public EntityType OfType { get; set; }
     }
 }

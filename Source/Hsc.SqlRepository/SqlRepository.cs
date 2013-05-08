@@ -8,17 +8,17 @@ namespace Hsc.SqlRepository
 {
     public class SqlRepository : ISqlRepository
     {
-        private readonly IConnectionProvider _connectionProvider;
-        private readonly ISqlEntityTypeRepository _entityTypeRepository;
         private readonly ISqlAttributeTypeRepository _attributeTypeRepository;
+        private readonly IConnectionProvider _connectionProvider;
         private readonly IEntityAttributeTypeRepository _entityAttributeTypeRepository;
         private readonly IEntityRepository _entityRepository;
+        private readonly ISqlEntityTypeRepository _entityTypeRepository;
 
-        public SqlRepository(IConnectionProvider connectionProvider, 
-            ISqlEntityTypeRepository entityTypeRepository,
-            ISqlAttributeTypeRepository attributeTypeRepository,
-            IEntityAttributeTypeRepository entityAttributeTypeRepository,
-            IEntityRepository entityRepository)
+        public SqlRepository(IConnectionProvider connectionProvider,
+                             ISqlEntityTypeRepository entityTypeRepository,
+                             ISqlAttributeTypeRepository attributeTypeRepository,
+                             IEntityAttributeTypeRepository entityAttributeTypeRepository,
+                             IEntityRepository entityRepository)
         {
             _connectionProvider = connectionProvider;
             _entityTypeRepository = entityTypeRepository;
@@ -31,9 +31,10 @@ namespace Hsc.SqlRepository
 
         public IEntityRepository Entities { get; set; }
         public IEntityTypeRepository EntityTypes { get; set; }
+
         public void InitializeDatabase()
         {
-            using (var connection = _connectionProvider.GetConnection())
+            using (SqlConnection connection = _connectionProvider.GetConnection())
             {
                 CreateMetaSchema(connection);
                 CreateInstanceSchema(connection);
@@ -50,9 +51,8 @@ namespace Hsc.SqlRepository
             person.Attributes.Add(new AttributeType("Age", DataType.Integer));
             person.Attributes.Add(new AttributeType("IsMale", DataType.Boolean));
             person.Attributes.Add(new EntityAttributeType("Spouse", person));
-            
-            _entityTypeRepository.Create(person);
 
+            _entityTypeRepository.Create(person);
         }
 
         public void PopulateWithMockData()
@@ -78,7 +78,7 @@ namespace Hsc.SqlRepository
 
         private void CreateMetaSchema(SqlConnection sqlConnection)
         {
-            using (var sqlCommand = sqlConnection.CreateCommand())
+            using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
             {
                 sqlCommand.CommandText = "IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'exm')" +
                                          "DROP SCHEMA exm";
@@ -90,7 +90,7 @@ namespace Hsc.SqlRepository
 
         private void CreateInstanceSchema(SqlConnection sqlConnection)
         {
-            using (var sqlCommand = sqlConnection.CreateCommand())
+            using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
             {
                 sqlCommand.CommandText = "IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'exi')" +
                                          "DROP SCHEMA exi";

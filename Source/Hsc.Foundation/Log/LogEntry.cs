@@ -23,12 +23,14 @@ namespace Hsc.Foundation.Log
         public int? EventId { get; set; }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        ///     Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <remarks>
-        /// If this needs to be updated, extract it to a logEntryFormatter and wire it appropriately.
+        ///     If this needs to be updated, extract it to a logEntryFormatter and wire it appropriately.
         /// </remarks>
-        /// <param name="includeException">If set to <c>true</c> the exception will be included in the message.</param>
+        /// <param name="includeException">
+        ///     If set to <c>true</c> the exception will be included in the message.
+        /// </param>
         public string ToString(bool includeException)
         {
             var stringBuilder = new StringBuilder();

@@ -12,7 +12,8 @@ namespace Hsc.SqlRepository.Meta
         private readonly IDataTypeConverter _dataTypeConverter;
         private readonly IEntityAttributeTypeRepository _entityAttributeTypeRepository;
 
-        public AttributeTypeRepository(IConnectionProvider connectionProvider, IDataTypeConverter dataTypeConverter, IEntityAttributeTypeRepository entityAttributeTypeRepository)
+        public AttributeTypeRepository(IConnectionProvider connectionProvider, IDataTypeConverter dataTypeConverter,
+                                       IEntityAttributeTypeRepository entityAttributeTypeRepository)
         {
             _connectionProvider = connectionProvider;
             _dataTypeConverter = dataTypeConverter;
@@ -21,7 +22,7 @@ namespace Hsc.SqlRepository.Meta
 
         public AttributeType Read(int id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public AttributeTypeCollection Read(EntityType entityType, IEntityTypeRepository entityTypeRepository)
@@ -32,11 +33,11 @@ namespace Hsc.SqlRepository.Meta
                 using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
                     sqlCommand.CommandText = string.Format("SELECT * FROM exm.AttributeTypes WHERE EntityTypeId='{0}'", entityType.Id);
-                    using (var reader = sqlCommand.ExecuteReader())
+                    using (SqlDataReader reader = sqlCommand.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            var dataType = (DataType)Enum.Parse(typeof(DataType), (string)reader["DataType"]);
+                            var dataType = (DataType) Enum.Parse(typeof (DataType), (string) reader["DataType"]);
                             var attributeType = new AttributeType
                                                     {
                                                         Id = (int) reader["Id"],
@@ -60,47 +61,21 @@ namespace Hsc.SqlRepository.Meta
             }
             if (attributeType is EntityAttributeType)
             {
-                _entityAttributeTypeRepository.Create((EntityAttributeType)attributeType, onEntity);
+                _entityAttributeTypeRepository.Create((EntityAttributeType) attributeType, onEntity);
                 return;
             }
             CreateValueAttribute(attributeType, onEntity);
         }
 
-        private void CreateValueAttribute(AttributeType attributeType, EntityType onEntity)
-        {
-            using (SqlConnection sqlConnection = _connectionProvider.GetConnection())
-            {
-                using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
-                {
-                    sqlCommand.CommandText =
-                        string.Format("INSERT INTO exm.AttributeTypes (Name, DataType, EntityTypeId) " +
-                                      "VALUES ('{0}', '{1}', {2})",
-                                      attributeType.Name,
-                                      attributeType.DataType,
-                                      onEntity.Id);
-                    sqlCommand.ExecuteNonQuery();
-                }
-                using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
-                {
-                    sqlCommand.CommandText = string.Format("ALTER TABLE exi.{0} ADD {1} {2}", 
-                                                           onEntity.Name,
-                                                           attributeType.Name,
-                                                           _dataTypeConverter.ToSqlType(attributeType.DataType));
-                    sqlCommand.ExecuteNonQuery();
-                }
-            }
-        }
-
-
 
         public List<AttributeType> ReadAll()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Delete(int id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void CreateTable()
@@ -122,10 +97,35 @@ namespace Hsc.SqlRepository.Meta
 
         public void Create(AttributeTypeCollection attributeTypeCollection, EntityType entityType)
         {
-                foreach (var attributeType in attributeTypeCollection)
+            foreach (AttributeType attributeType in attributeTypeCollection)
+            {
+                Create(attributeType, entityType);
+            }
+        }
+
+        private void CreateValueAttribute(AttributeType attributeType, EntityType onEntity)
+        {
+            using (SqlConnection sqlConnection = _connectionProvider.GetConnection())
+            {
+                using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
-                    Create(attributeType, entityType);
+                    sqlCommand.CommandText =
+                        string.Format("INSERT INTO exm.AttributeTypes (Name, DataType, EntityTypeId) " +
+                                      "VALUES ('{0}', '{1}', {2})",
+                                      attributeType.Name,
+                                      attributeType.DataType,
+                                      onEntity.Id);
+                    sqlCommand.ExecuteNonQuery();
                 }
+                using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
+                {
+                    sqlCommand.CommandText = string.Format("ALTER TABLE exi.{0} ADD {1} {2}",
+                                                           onEntity.Name,
+                                                           attributeType.Name,
+                                                           _dataTypeConverter.ToSqlType(attributeType.DataType));
+                    sqlCommand.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
-using System.Threading;
 using System.Text;
+using System.Threading;
 using Hsc.Foundation.Log;
 
 namespace Hsc.LogDemo
@@ -18,74 +18,6 @@ namespace Hsc.LogDemo
         }
 
         #region ILogDemo Members
-
-        /// <summary>
-        /// Runs the demo of the ILogBuilderFacotry interface.
-        /// </summary>
-        /// <remarks>
-        /// This is more compact than ILogger. Main drawback is that you have to end the train with .Write().
-        /// </remarks>
-        private void RunILogBuilderFactoryDemo()
-        {
-            _logFactory.CreateWithMessage("My message").AsInfo().Write();
-
-            _logFactory.CreateWithMessage("My formatted message, running from: {0}", 
-                               Assembly.GetExecutingAssembly().GetName().Name)
-                       .AsInfo()
-                       .Write();
-
-            _logFactory.CreateWithMessage("An error message").AsError().Write();
-
-            _logFactory.CreateWithMessage("An error message with exception")
-                .AsError()
-                .WithException(new AbandonedMutexException("message"))
-                .WithCause("Demonstrating ILogBuilderFactory")
-                .WithResolution("Stop running the demo.")
-                .WithEventId(42)
-                .Write();
-
-            _logFactory.CreateWithMessage(GetRandomString(28000))
-                .AsError()
-                .WithException(new IndexOutOfRangeException("My funny exception"))
-                .WithEventId(47)
-                .WithCause("Split me, please")
-                .WithResolution("Try to log smaller messges?")
-                .Write();
-        }
-
-        /// <summary>
-        /// Runs the demo of the ILogger interface.
-        /// </summary>
-        /// <remarks>
-        /// This interface is verbose and flexible.
-        /// </remarks>
-        private void RunILoggerDemo()
-        {
-            _logger.Write(new LogEntry { Message = "Another way to write a message" });
-
-            _logger.Write(new LogEntry
-            {
-                Message =
-                    string.Format("Anoter formatted message, running from: {0}",
-                                  Assembly.GetExecutingAssembly().GetName().Name)
-            });
-
-            _logger.Write(new LogEntry
-            {
-                Message = "Another error message",
-                Level = LogLevel.Error
-            });
-
-            _logger.Write(new LogEntry
-            {
-                Message = "Another error message",
-                Level = LogLevel.Error,
-                Cause = "Demonstrating ILogger",
-                Exception = new AbandonedMutexException("foo exception"),
-                Resolution = "Stop running the demo.",
-                EventId = 43
-            });
-        }
 
         public void Run()
         {
@@ -110,14 +42,82 @@ namespace Hsc.LogDemo
             Console.ReadKey();
         }
 
+        /// <summary>
+        ///     Runs the demo of the ILogBuilderFacotry interface.
+        /// </summary>
+        /// <remarks>
+        ///     This is more compact than ILogger. Main drawback is that you have to end the train with .Write().
+        /// </remarks>
+        private void RunILogBuilderFactoryDemo()
+        {
+            _logFactory.CreateWithMessage("My message").AsInfo().Write();
+
+            _logFactory.CreateWithMessage("My formatted message, running from: {0}",
+                                          Assembly.GetExecutingAssembly().GetName().Name)
+                       .AsInfo()
+                       .Write();
+
+            _logFactory.CreateWithMessage("An error message").AsError().Write();
+
+            _logFactory.CreateWithMessage("An error message with exception")
+                       .AsError()
+                       .WithException(new AbandonedMutexException("message"))
+                       .WithCause("Demonstrating ILogBuilderFactory")
+                       .WithResolution("Stop running the demo.")
+                       .WithEventId(42)
+                       .Write();
+
+            _logFactory.CreateWithMessage(GetRandomString(28000))
+                       .AsError()
+                       .WithException(new IndexOutOfRangeException("My funny exception"))
+                       .WithEventId(47)
+                       .WithCause("Split me, please")
+                       .WithResolution("Try to log smaller messges?")
+                       .Write();
+        }
+
+        /// <summary>
+        ///     Runs the demo of the ILogger interface.
+        /// </summary>
+        /// <remarks>
+        ///     This interface is verbose and flexible.
+        /// </remarks>
+        private void RunILoggerDemo()
+        {
+            _logger.Write(new LogEntry {Message = "Another way to write a message"});
+
+            _logger.Write(new LogEntry
+                              {
+                                  Message =
+                                      string.Format("Anoter formatted message, running from: {0}",
+                                                    Assembly.GetExecutingAssembly().GetName().Name)
+                              });
+
+            _logger.Write(new LogEntry
+                              {
+                                  Message = "Another error message",
+                                  Level = LogLevel.Error
+                              });
+
+            _logger.Write(new LogEntry
+                              {
+                                  Message = "Another error message",
+                                  Level = LogLevel.Error,
+                                  Cause = "Demonstrating ILogger",
+                                  Exception = new AbandonedMutexException("foo exception"),
+                                  Resolution = "Stop running the demo.",
+                                  EventId = 43
+                              });
+        }
+
         private string GetRandomString(int size)
         {
             var builder = new StringBuilder();
-            Random random = new Random(315341354);
+            var random = new Random(315341354);
             char ch;
             for (int i = 0; i < size; i++)
             {
-                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26*random.NextDouble() + 65)));
                 builder.Append(ch);
             }
 

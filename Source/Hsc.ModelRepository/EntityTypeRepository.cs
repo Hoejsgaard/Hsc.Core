@@ -8,16 +8,11 @@ namespace Hsc.ModelRepository
 {
     public class EntityTypeRepository : IEntityTypeRepository
     {
-        private EntityTypeCollection EntityTypes = new EntityTypeCollection();
+        private readonly EntityTypeCollection EntityTypes = new EntityTypeCollection();
 
         public void Create(EntityType entityType)
         {
             EntityTypes.Add(entityType);
-        }
-
-        public void Udpate(EntityType entityType)
-        {
-            throw new NotImplementedException();
         }
 
         public EntityType Read(string name)
@@ -32,12 +27,17 @@ namespace Hsc.ModelRepository
 
         public List<EntityType> ReadAll()
         {
-            return EntityTypes.ToList<EntityType>();
+            return EntityTypes.ToList();
         }
 
         public void Delete(string name)
         {
             EntityTypes.Remove(name);
+        }
+
+        public void Udpate(EntityType entityType)
+        {
+            throw new NotImplementedException();
         }
     }
 }

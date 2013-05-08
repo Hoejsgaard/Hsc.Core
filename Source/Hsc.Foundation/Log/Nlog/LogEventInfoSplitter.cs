@@ -15,32 +15,35 @@ namespace Hsc.Foundation.Log.Nlog
         }
 
         /// <summary>
-        /// Gets or sets the characters that has been reserved for formatting in NLog. Default value is 200.
+        ///     Gets or sets the characters that has been reserved for formatting in NLog. Default value is 200.
         /// </summary>
         public int ReservedForFormatting { get; set; }
 
         /// <summary>
-        /// Gets or sets the message size limit. Default value is 8000.
+        ///     Gets or sets the message size limit. Default value is 8000.
         /// </summary>
         /// <remarks>
-        /// limit in DB: varchar(MAX) ~ 8000
-        /// For EventLog: 16-32 KB depending on the OS.
+        ///     limit in DB: varchar(MAX) ~ 8000
+        ///     For EventLog: 16-32 KB depending on the OS.
         /// </remarks>
         public int MessageSizeLimit { get; set; }
 
         /// <summary>
-        /// Gets the reserved for split formatting. This is used for header, footer and counter.
+        ///     Gets the reserved for split formatting. This is used for header, footer and counter.
         /// </summary>
-        private int ReservedForSplitFormatting { get { return 100; } }
+        private int ReservedForSplitFormatting
+        {
+            get { return 100; }
+        }
 
         /// <summary>
-        /// Splits the log event info into multiple fragments, if it's message 
-        /// is too big for common target. This is done to aviod truncation in various
-        /// log targets (e.g., DataBase and EventLog).
+        ///     Splits the log event info into multiple fragments, if it's message
+        ///     is too big for common target. This is done to aviod truncation in various
+        ///     log targets (e.g., DataBase and EventLog).
         /// </summary>
         /// <remarks>
-        /// It is assumed that one character is one Byte. If we start logging
-        /// in unicode, the strategy needs to be revised.
+        ///     It is assumed that one character is one Byte. If we start logging
+        ///     in unicode, the strategy needs to be revised.
         /// </remarks>
         public List<LogEventInfo> GetEventFragments(LogEventInfo logEventInfo)
         {
@@ -48,7 +51,7 @@ namespace Hsc.Foundation.Log.Nlog
 
             if (logEventInfo.Message.Length <= maxMessageLength)
             {
-                return new List<LogEventInfo> { logEventInfo };
+                return new List<LogEventInfo> {logEventInfo};
             }
 
             return Fragment(logEventInfo, maxMessageLength);
@@ -58,38 +61,42 @@ namespace Hsc.Foundation.Log.Nlog
         {
             maxSize -= ReservedForSplitFormatting;
 
-            List<LogEventInfo> logEvents = new List<LogEventInfo>();
+            var logEvents = new List<LogEventInfo>();
             int fragments = CalculateNumberOfFragments(logEventInfo.Message.Length, maxSize);
 
             for (int i = 0; i < fragments; i++)
             {
                 string messageFragment;
                 if (i == fragments - 1)
-                    messageFragment = logEventInfo.Message.Substring(i * maxSize);
+                {
+                    messageFragment = logEventInfo.Message.Substring(i*maxSize);
+                }
                 else
-                    messageFragment = logEventInfo.Message.Substring(i * maxSize, maxSize);
-                var fragmentMessage = FormatFragment(messageFragment, i + 1, fragments);
-                var fragment = CreateFragment(logEventInfo, fragmentMessage);
+                {
+                    messageFragment = logEventInfo.Message.Substring(i*maxSize, maxSize);
+                }
+                string fragmentMessage = FormatFragment(messageFragment, i + 1, fragments);
+                LogEventInfo fragment = CreateFragment(logEventInfo, fragmentMessage);
                 logEvents.Add(fragment);
             }
-            
+
             return logEvents;
         }
 
         private int CalculateNumberOfFragments(int length, int size)
         {
-            return ((length - 1) / size) + 1;
+            return ((length - 1)/size) + 1;
         }
 
         private LogEventInfo CreateFragment(LogEventInfo logEvent, string formattedFragment)
         {
-            LogEventInfo logEventFragment = new LogEventInfo
-            {
-                Level = logEvent.Level,
-                Message = formattedFragment,
-                Exception = logEvent.Exception,
-                TimeStamp = DateTime.UtcNow
-            };
+            var logEventFragment = new LogEventInfo
+                                       {
+                                           Level = logEvent.Level,
+                                           Message = formattedFragment,
+                                           Exception = logEvent.Exception,
+                                           TimeStamp = DateTime.UtcNow
+                                       };
             if (logEvent.Properties.ContainsKey(EventId))
             {
                 logEventFragment.Properties[EventId] = logEvent.Properties[EventId];

@@ -1,7 +1,7 @@
 ﻿namespace Hsc.Foundation.Log
 {
     /// <summary>
-    /// Null logger for use in unit tests.
+    ///     Null logger for use in unit tests.
     /// </summary>
     public class NullLogger : ILogger
     {

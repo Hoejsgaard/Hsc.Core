@@ -23,7 +23,7 @@ namespace Hsc.TestApplication
             //    new ContainerControlledLifetimeManager());
 
             //container.RegisterType<IEntityRepository, EntityRepository>(new ContainerControlledLifetimeManager());
-            
+
             container.RegisterType<IConnectionProvider, HardcodedConnectionProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<IDataTypeConverter, DataTypeConverter>(new ContainerControlledLifetimeManager());
             container.RegisterType<IEntityAttributeTypeRepository, EntityAttributeTypeRepository>(new ContainerControlledLifetimeManager());

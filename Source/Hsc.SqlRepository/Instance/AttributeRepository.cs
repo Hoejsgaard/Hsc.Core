@@ -1,6 +1,6 @@
 ﻿namespace Hsc.SqlRepository.Instance
 {
-    class AttributeRepository
+    internal class AttributeRepository
     {
     }
 }

@@ -4,12 +4,6 @@ using Hsc.Model.Knowledge;
 
 namespace Hsc.SqlRepository
 {
-    public interface IDataTypeConverter
-    {
-        string ToSqlType(DataType type);
-        DataType ToDataType(string sqlDataType);
-    }
-
     public class DataTypeConverter : IDataTypeConverter
     {
         public string ToSqlType(DataType type)
@@ -32,7 +26,7 @@ namespace Hsc.SqlRepository
                     return "DateTime";
                 case DataType.DateTime:
                     return "DateTime";
-                    case DataType.Entity:
+                case DataType.Entity:
                     return "Int";
                 default:
                     throw new ArgumentOutOfRangeException("type");

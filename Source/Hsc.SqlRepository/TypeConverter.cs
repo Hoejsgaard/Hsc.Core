@@ -5,7 +5,7 @@ using System.Data;
 namespace Hsc.SqlRepository
 {
     /// <summary>
-    /// Convert a base data type to another base data type
+    ///     Convert a base data type to another base data type
     /// </summary>
     public static class TypeConverter
     {
@@ -69,7 +69,7 @@ namespace Hsc.SqlRepository
         #region Methods
 
         /// <summary>
-        /// Convert db type to .Net data type
+        ///     Convert db type to .Net data type
         /// </summary>
         /// <param name="dbType"></param>
         /// <returns></returns>
@@ -81,7 +81,7 @@ namespace Hsc.SqlRepository
 
 
         /// <summary>
-        /// Convert TSQL type to .Net data type
+        ///     Convert TSQL type to .Net data type
         /// </summary>
         /// <param name="sqlDbType"></param>
         /// <returns></returns>
@@ -92,7 +92,7 @@ namespace Hsc.SqlRepository
         }
 
         /// <summary>
-        /// Convert .Net type to Db type
+        ///     Convert .Net type to Db type
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
@@ -103,7 +103,7 @@ namespace Hsc.SqlRepository
         }
 
         /// <summary>
-        /// Convert TSQL data type to DbType
+        ///     Convert TSQL data type to DbType
         /// </summary>
         /// <param name="sqlDbType"></param>
         /// <returns></returns>
@@ -115,7 +115,7 @@ namespace Hsc.SqlRepository
 
 
         /// <summary>
-        /// Convert .Net type to TSQL data type
+        ///     Convert .Net type to TSQL data type
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
@@ -137,7 +137,7 @@ namespace Hsc.SqlRepository
 
 
         /// <summary>
-        /// Convert DbType type to TSQL data type
+        ///     Convert DbType type to TSQL data type
         /// </summary>
         /// <param name="dbType"></param>
         /// <returns></returns>

@@ -4,12 +4,11 @@ using System.Configuration.Install;
 namespace Hsc.LogDemo
 {
     /// <summary>
-    /// Installer for adding the program as an event log source. Use
+    ///     Installer for adding the program as an event log source. Use
     /// </summary>
     /// <example>
-    /// In a commandpromt run 
-    /// 
-    /// installutil -i Hsc.LogDemo.exe
+    ///     In a commandpromt run
+    ///     installutil -i Hsc.LogDemo.exe
     /// </example>
     [RunInstaller(true)]
     public class EventLogInstaller : Installer

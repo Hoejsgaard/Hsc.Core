@@ -5,14 +5,6 @@ namespace Hsc.Model.Operation
 {
     public class Entity
     {
-        [Alias("EntityId")]
-        [AutoIncrement]
-        public int Id { get; set; }
-
-        public EntityType EntityType { get; private set; }
-
-        public AttributeCollection Attributes { get; private set; }
-
         public Entity(EntityType entityType)
         {
             if (entityType == null)
@@ -28,5 +20,13 @@ namespace Hsc.Model.Operation
         {
             // for serialization
         }
+
+        [Alias("EntityId")]
+        [AutoIncrement]
+        public int Id { get; set; }
+
+        public EntityType EntityType { get; private set; }
+
+        public AttributeCollection Attributes { get; private set; }
     }
 }

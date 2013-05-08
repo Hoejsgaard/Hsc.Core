@@ -6,9 +6,7 @@ namespace Hsc.Model.Operation
 {
     public class AttributeCollection : KeyedCollection<string, Attribute>
     {
-        public AttributeTypeCollection AttributeTypes { get; private set; }
-
-        public AttributeCollection(AttributeTypeCollection attributeTypeCollection) : base() 
+        public AttributeCollection(AttributeTypeCollection attributeTypeCollection)
         {
             if (attributeTypeCollection == null)
             {
@@ -16,6 +14,8 @@ namespace Hsc.Model.Operation
             }
             AttributeTypes = attributeTypeCollection;
         }
+
+        public AttributeTypeCollection AttributeTypes { get; private set; }
 
         public new Attribute this[string key]
         {
@@ -56,7 +56,7 @@ namespace Hsc.Model.Operation
 
         private void ThrowIfNotValid(Attribute attribute)
         {
-            if (!HasLegalName(attribute) || 
+            if (!HasLegalName(attribute) ||
                 !HasCorrectType(attribute))
             {
                 throw new OperationException();
@@ -70,7 +70,7 @@ namespace Hsc.Model.Operation
 
         private bool HasCorrectType(Attribute attribute)
         {
-            var attributeType = AttributeTypes[attribute.Name];
+            AttributeType attributeType = AttributeTypes[attribute.Name];
             return attribute.AttributeType == attributeType;
         }
     }

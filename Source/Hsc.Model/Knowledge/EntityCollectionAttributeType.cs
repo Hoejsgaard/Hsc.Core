@@ -1,6 +1,6 @@
 ﻿namespace Hsc.Model.Knowledge
 {
-    class EntityCollectionAttributeType
+    internal class EntityCollectionAttributeType
     {
     }
 }

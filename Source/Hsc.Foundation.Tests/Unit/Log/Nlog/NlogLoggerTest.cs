@@ -1,30 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using Hsc.Foundation.Log;
 using Hsc.Foundation.Log.Nlog;
+using NLog;
 using NUnit.Framework;
 using Rhino.Mocks;
-using NLog;
-using System.Collections.Generic;
+using LogLevel = NLog.LogLevel;
 
 namespace Hsc.Foundation.Tests.Unit.Log.Nlog
 {
     [TestFixture]
-    class NlogLoggerTest
+    internal class NlogLoggerTest
     {
-        NLogLogger _nlogLogger;
-
-        INLogConfigurationRepository _nlogConfigurationRepository;
-        ILogEventInfoSplitter _logEventInfoSplitter;
-        ILogger _logger;
-        LogEntryBuilder _builder;
-        
         [SetUp]
         public void Setup()
         {
             _nlogConfigurationRepository = MockRepository.GenerateStub<INLogConfigurationRepository>();
 
             _logEventInfoSplitter = MockRepository.GenerateStub<ILogEventInfoSplitter>();
-            var logEventInfos = new List<LogEventInfo> {new LogEventInfo(NLog.LogLevel.Debug, "foo", "bar")};
+            var logEventInfos = new List<LogEventInfo> {new LogEventInfo(LogLevel.Debug, "foo", "bar")};
             _logEventInfoSplitter.Stub(x => x.GetEventFragments(null)).IgnoreArguments().Return(logEventInfos);
 
             _logger = MockRepository.GenerateMock<ILogger>();
@@ -42,6 +36,13 @@ namespace Hsc.Foundation.Tests.Unit.Log.Nlog
             _nlogLogger = null;
         }
 
+        private NLogLogger _nlogLogger;
+
+        private INLogConfigurationRepository _nlogConfigurationRepository;
+        private ILogEventInfoSplitter _logEventInfoSplitter;
+        private ILogger _logger;
+        private LogEntryBuilder _builder;
+
         [Test]
         public void Flush()
         {
@@ -49,35 +50,9 @@ namespace Hsc.Foundation.Tests.Unit.Log.Nlog
         }
 
         [Test]
-        public void Write_WithNull()
-        {
-            _nlogLogger.Write(null);
-        }
-
-        [Test]
-        public void Write_Trace()
-        {
-            var entry = _builder.AsTrace().LogEntry;
-            Assert.That(entry, Is.Not.Null);
-            _nlogLogger.Write(entry);
-        }
-
-        [Test]
         public void Write_Debug()
         {
             _nlogLogger.Write(_builder.AsDebug().LogEntry);
-        }
-
-        [Test]
-        public void Write_Info()
-        {
-            _nlogLogger.Write(_builder.AsInfo().LogEntry);
-        }
-
-        [Test]
-        public void Write_Warn()
-        {
-            _nlogLogger.Write(_builder.AsWarning().LogEntry);
         }
 
         [Test]
@@ -93,15 +68,9 @@ namespace Hsc.Foundation.Tests.Unit.Log.Nlog
         }
 
         [Test]
-        public void Write_WithException()
+        public void Write_Info()
         {
-            _nlogLogger.Write(_builder.WithException(new DuplicateWaitObjectException()).LogEntry);
-        }
-
-        [Test]
-        public void Write_WithEventId()
-        {
-            _nlogLogger.Write(_builder.WithEventId(42).LogEntry);
+            _nlogLogger.Write(_builder.AsInfo().LogEntry);
         }
 
         [Test]
@@ -114,9 +83,41 @@ namespace Hsc.Foundation.Tests.Unit.Log.Nlog
         }
 
         [Test]
+        public void Write_Trace()
+        {
+            LogEntry entry = _builder.AsTrace().LogEntry;
+            Assert.That(entry, Is.Not.Null);
+            _nlogLogger.Write(entry);
+        }
+
+        [Test]
+        public void Write_Warn()
+        {
+            _nlogLogger.Write(_builder.AsWarning().LogEntry);
+        }
+
+        [Test]
         public void Write_WithBigMessage()
         {
             _nlogLogger.Write(_builder.WithMessage(StringGenerator.BuildRandomString(70000)).LogEntry);
+        }
+
+        [Test]
+        public void Write_WithEventId()
+        {
+            _nlogLogger.Write(_builder.WithEventId(42).LogEntry);
+        }
+
+        [Test]
+        public void Write_WithException()
+        {
+            _nlogLogger.Write(_builder.WithException(new DuplicateWaitObjectException()).LogEntry);
+        }
+
+        [Test]
+        public void Write_WithNull()
+        {
+            _nlogLogger.Write(null);
         }
     }
 }

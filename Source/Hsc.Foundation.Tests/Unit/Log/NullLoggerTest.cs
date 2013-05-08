@@ -4,11 +4,8 @@ using NUnit.Framework;
 namespace Hsc.Foundation.Tests.Unit.Log
 {
     [TestFixture]
-    class NullLoggerTest
+    internal class NullLoggerTest
     {
-        NullLogger _nullLogger;
-        LogEntryBuilder _logEntryBuilder;
-
         [SetUp]
         public void Setup()
         {
@@ -22,17 +19,20 @@ namespace Hsc.Foundation.Tests.Unit.Log
             _nullLogger = null;
         }
 
-        [Test]
-        public void Write()
-        {
-            var etntry = _logEntryBuilder.WithMessage("foo").LogEntry;
-            _nullLogger.Write(etntry);
-        }
+        private NullLogger _nullLogger;
+        private LogEntryBuilder _logEntryBuilder;
 
         [Test]
         public void Flush()
         {
             _nullLogger.Flush();
+        }
+
+        [Test]
+        public void Write()
+        {
+            LogEntry etntry = _logEntryBuilder.WithMessage("foo").LogEntry;
+            _nullLogger.Write(etntry);
         }
     }
 }

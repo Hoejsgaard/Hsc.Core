@@ -7,8 +7,6 @@ namespace Hsc.Foundation.Tests.Unit.Log
     [TestFixture]
     internal class FluentLoggerTest
     {
-        private ILogger _logger;
-
         [SetUp]
         public void Setup()
         {
@@ -20,6 +18,8 @@ namespace Hsc.Foundation.Tests.Unit.Log
         {
             _logger = null;
         }
+
+        private ILogger _logger;
 
         [Test]
         public void Create()

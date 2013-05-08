@@ -3,6 +3,7 @@ using Hsc.Model.Knowledge;
 using Hsc.Model.Operation;
 using Hsc.SqlRepository;
 using Microsoft.Practices.Unity;
+using Attribute = Hsc.Model.Operation.Attribute;
 
 namespace Hsc.TestApplication
 {
@@ -40,11 +41,11 @@ namespace Hsc.TestApplication
 
         private static void PrintAttributes(AttributeCollection attributes, int indentation)
         {
-            foreach (Model.Operation.Attribute attribute in attributes)
+            foreach (Attribute attribute in attributes)
             {
                 if (attribute.AttributeType.DataType == DataType.Entity)
                 {
-                    Entity childEntity = (Entity) attribute.Value;
+                    var childEntity = (Entity) attribute.Value;
                     Console.WriteLine("{0}{1} : {2}", GetIndentation(indentation), attribute.Name, childEntity.Attributes["Name"].Value);
                 }
                 else
