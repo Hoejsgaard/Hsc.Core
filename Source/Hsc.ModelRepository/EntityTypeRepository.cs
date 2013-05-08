@@ -20,12 +20,17 @@ namespace Hsc.ModelRepository
             throw new NotImplementedException();
         }
 
-        public EntityType Get(string name)
+        public EntityType Read(string name)
         {
             return EntityTypes[name];
         }
 
-        public List<EntityType> GetAll()
+        public void Update(EntityType entityType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<EntityType> ReadAll()
         {
             return EntityTypes.ToList<EntityType>();
         }

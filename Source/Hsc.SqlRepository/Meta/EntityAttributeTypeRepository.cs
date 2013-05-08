@@ -48,7 +48,7 @@ namespace Hsc.SqlRepository.Meta
                             var attributeName = (string) reader["Name"];
                             EntityType ofType = entityTypeName == entityType.Name
                                                     ? entityType
-                                                    : entityTypeRepository.Get(entityTypeName);
+                                                    : entityTypeRepository.Read(entityTypeName);
                             var entityAttributeType =
                                 new EntityAttributeType
                                     {

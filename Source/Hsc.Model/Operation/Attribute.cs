@@ -28,17 +28,18 @@ namespace Hsc.Model.Operation
         [DataMember]
         public object Value
         {
-            get
-            {
-                return _value;
-            }
+            get { return _value; }
             set
             {
                 ValidationResult validationResult = AttributeType.ValidateValue(value);
                 if (validationResult.IsValid)
+                {
                     _value = value;
+                }
                 else
+                {
                     throw new OperationException();
+                }
             }
         }
     }

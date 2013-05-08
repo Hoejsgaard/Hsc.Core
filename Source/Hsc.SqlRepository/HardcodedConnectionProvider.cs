@@ -2,7 +2,7 @@ using System.Data.SqlClient;
 
 namespace Hsc.SqlRepository
 {
-    public class ConnectionProvider : IConnectionProvider
+    public class HardcodedConnectionProvider : IConnectionProvider
     {
         #region IConnectionProvider Members
 

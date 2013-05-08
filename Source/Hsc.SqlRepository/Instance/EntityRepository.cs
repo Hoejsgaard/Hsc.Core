@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
 using Hsc.Model.Knowledge;
@@ -15,7 +16,7 @@ namespace Hsc.SqlRepository.Instance
             _connectionProvider = connectionProvider;
         }
         
-        public int Add(Entity entity)
+        public int Create(Entity entity)
         {
             if (entity.Id != 0)
             {
@@ -51,7 +52,7 @@ namespace Hsc.SqlRepository.Instance
                     var childEntity = (Entity)attribute.Value;
                     if (childEntity.Id == 0)
                     {
-                        Add(childEntity);
+                        Create(childEntity);
                     }
                     stringBuilder.Append(string.Format("{0}={1}", attribute.Name, childEntity.Id));
                 }
@@ -95,12 +96,17 @@ namespace Hsc.SqlRepository.Instance
             return query.Substring(0, query.Length - 2);
         }
 
+        public void Update(Entity entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Delete(EntityType entityType, int id)
         {
             throw new System.NotImplementedException();
         }
 
-        public Entity Get(EntityType entityType, int id)
+        public Entity Read(EntityType entityType, int id)
         {
             return Get(entityType, id, new List<Entity>());
         }
@@ -165,7 +171,7 @@ namespace Hsc.SqlRepository.Instance
             return null;
         }
 
-        public List<Entity> GetAll(EntityType entityType)
+        public List<Entity> ReadAll(EntityType entityType)
         {
             var entities = new List<Entity>();
             using (SqlConnection sqlConnection = _connectionProvider.GetConnection())

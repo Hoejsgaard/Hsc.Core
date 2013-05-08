@@ -58,7 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectionProvider.cs" />
+    <Compile Include="HardcodedConnectionProvider.cs" />
     <Compile Include="DataTypeConverter.cs" />
     <Compile Include="Instance\AttributeRepository.cs" />
     <Compile Include="Instance\ISqlAttributeRepository.cs" />

@@ -43,21 +43,12 @@ namespace Hsc.SqlRepository
             }
         }
 
-        public enum Gender
-        {
-            Male, 
-            Female
-        }
-
         public void PopulateWithMockTypes()
         {
-            //var gender = new EntityType("Gender");
-
             var person = new EntityType("Person");
             person.Attributes.Add(new AttributeType("Name", DataType.String256));
             person.Attributes.Add(new AttributeType("Age", DataType.Integer));
             person.Attributes.Add(new AttributeType("IsMale", DataType.Boolean));
-            //person.Attributes.Add(new EntityAttributeType("Gender", gender));
             person.Attributes.Add(new EntityAttributeType("Spouse", person));
             
             _entityTypeRepository.Create(person);
@@ -66,7 +57,7 @@ namespace Hsc.SqlRepository
 
         public void PopulateWithMockData()
         {
-            EntityType personType = _entityTypeRepository.Get("Person");
+            EntityType personType = _entityTypeRepository.Read("Person");
 
             var rune = new Entity(personType);
             rune.Attributes["Name"].Value = "Rune";
@@ -81,8 +72,8 @@ namespace Hsc.SqlRepository
             rune.Attributes["Spouse"].Value = nina;
             nina.Attributes["Spouse"].Value = rune;
 
-            _entityRepository.Add(rune);
-            _entityRepository.Add(nina);
+            _entityRepository.Create(rune);
+            _entityRepository.Create(nina);
         }
 
         private void CreateMetaSchema(SqlConnection sqlConnection)

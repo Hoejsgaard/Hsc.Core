@@ -6,8 +6,9 @@ namespace Hsc.Repository
     public interface IEntityTypeRepository
     {
         void Create(EntityType entityType);
+        EntityType Read(string name);
+        List<EntityType> ReadAll();
+        void Update(EntityType entityType);
         void Delete(string name);
-        EntityType Get(string name);
-        List<EntityType> GetAll();
     }
 }

@@ -17,7 +17,7 @@ namespace Hsc.TestApplication
             sqlRepository.PopulateWithMockTypes();
             sqlRepository.PopulateWithMockData();
 
-            EntityType entityType = sqlRepository.EntityTypes.Get("Person");
+            EntityType entityType = sqlRepository.EntityTypes.Read("Person");
 
             Console.WriteLine("Fetched Person EntityType from database");
 
@@ -27,7 +27,7 @@ namespace Hsc.TestApplication
             }
 
             Console.WriteLine("The following Persons are in the database");
-            foreach (Entity person in sqlRepository.Entities.GetAll(entityType))
+            foreach (Entity person in sqlRepository.Entities.ReadAll(entityType))
             {
                 Console.WriteLine("Person: ");
                 PrintAttributes(person.Attributes, 1);
