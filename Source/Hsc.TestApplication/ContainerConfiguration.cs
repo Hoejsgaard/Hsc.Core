@@ -12,18 +12,6 @@ namespace Hsc.TestApplication
         {
             IUnityContainer container = new UnityContainer();
 
-            //var ormLiteConnectionFactory = new OrmLiteConnectionFactory(
-            //            "Server=localhost; Database=database; User Id=demoUser; Password=Password42",
-            //            SqlServerDialect.Provider);
-            //container.RegisterInstance<IDbConnectionFactory>(ormLiteConnectionFactory, new ContainerControlledLifetimeManager());
-
-            //container.RegisterType<IRepository, OrmLiteRepository.OrmLiteRepository>(
-            //    new ContainerControlledLifetimeManager());
-            //container.RegisterType<IOrmLiteRepository, OrmLiteRepository.OrmLiteRepository>(
-            //    new ContainerControlledLifetimeManager());
-
-            //container.RegisterType<IEntityRepository, EntityRepository>(new ContainerControlledLifetimeManager());
-
             container.RegisterType<IConnectionProvider, HardcodedConnectionProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<IDataTypeConverter, DataTypeConverter>(new ContainerControlledLifetimeManager());
             container.RegisterType<IEntityAttributeTypeRepository, EntityAttributeTypeRepository>(new ContainerControlledLifetimeManager());
