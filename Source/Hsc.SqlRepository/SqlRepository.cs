@@ -2,7 +2,7 @@
 using Hsc.Model.Knowledge;
 using Hsc.Model.Operation;
 using Hsc.Repository;
-using Hsc.SqlRepository.Meta;
+using Hsc.SqlRepository.Knowledge;
 
 namespace Hsc.SqlRepository
 {
@@ -80,10 +80,10 @@ namespace Hsc.SqlRepository
         {
             using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
             {
-                sqlCommand.CommandText = "IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'exm')" +
-                                         "DROP SCHEMA exm";
+                sqlCommand.CommandText = "IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'hsck')" +
+                                         "DROP SCHEMA hsck";
                 sqlCommand.ExecuteNonQuery();
-                sqlCommand.CommandText = "CREATE SCHEMA exm";
+                sqlCommand.CommandText = "CREATE SCHEMA hsck";
                 sqlCommand.ExecuteNonQuery();
             }
         }
@@ -92,10 +92,10 @@ namespace Hsc.SqlRepository
         {
             using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
             {
-                sqlCommand.CommandText = "IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'exi')" +
-                                         "DROP SCHEMA exi";
+                sqlCommand.CommandText = "IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'hsco')" +
+                                         "DROP SCHEMA hsco";
                 sqlCommand.ExecuteNonQuery();
-                sqlCommand.CommandText = "CREATE SCHEMA exi";
+                sqlCommand.CommandText = "CREATE SCHEMA hsco";
                 sqlCommand.ExecuteNonQuery();
             }
         }

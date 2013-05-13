@@ -6,13 +6,13 @@ using Hsc.Model.Knowledge;
 using Hsc.Model.Operation;
 using Attribute = Hsc.Model.Operation.Attribute;
 
-namespace Hsc.SqlRepository.Instance
+namespace Hsc.SqlRepository.Operation
 {
-    public class EntityRepository : ISqlEntityRepository
+    public class SqlEntityRepository : ISqlEntityRepository
     {
         private readonly IConnectionProvider _connectionProvider;
 
-        public EntityRepository(IConnectionProvider connectionProvider)
+        public SqlEntityRepository(IConnectionProvider connectionProvider)
         {
             _connectionProvider = connectionProvider;
         }
@@ -60,7 +60,7 @@ namespace Hsc.SqlRepository.Instance
             {
                 using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
-                    sqlCommand.CommandText = string.Format("SELECT * FROM exi.{0}", entityType.Name);
+                    sqlCommand.CommandText = string.Format("SELECT * FROM hsco.{0}", entityType.Name);
                     using (SqlDataReader reader = sqlCommand.ExecuteReader())
                     {
                         var loadedEntitites = new List<Entity>();
@@ -78,7 +78,7 @@ namespace Hsc.SqlRepository.Instance
 
         private string CreateReferenceAttributesQuery(Entity entity)
         {
-            return string.Format("UPDATE exi.{0} SET {1} WHERE Id={2}", entity.EntityType.Name, CreateReferenceKeyValues(entity), entity.Id);
+            return string.Format("UPDATE hsco.{0} SET {1} WHERE Id={2}", entity.EntityType.Name, CreateReferenceKeyValues(entity), entity.Id);
         }
 
         private string CreateReferenceKeyValues(Entity entity)
@@ -101,7 +101,7 @@ namespace Hsc.SqlRepository.Instance
 
         private string CreateBaseAttributesQuery(Entity entity)
         {
-            return string.Format("INSERT INTO exi.{0} ({1}) OUTPUT inserted.Id VALUES ({2})",
+            return string.Format("INSERT INTO hsco.{0} ({1}) OUTPUT inserted.Id VALUES ({2})",
                                  entity.EntityType.Name,
                                  GetColumns(entity.Attributes),
                                  GetValues(entity.Attributes));
@@ -144,7 +144,7 @@ namespace Hsc.SqlRepository.Instance
                 {
                     using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                     {
-                        sqlCommand.CommandText = string.Format("SELECT * FROM exi.{0} WHERE Id={1}", entityType.Name, id);
+                        sqlCommand.CommandText = string.Format("SELECT * FROM hsco.{0} WHERE Id={1}", entityType.Name, id);
                         using (SqlDataReader reader = sqlCommand.ExecuteReader())
                         {
                             reader.Read();

@@ -1,6 +1,6 @@
 using Hsc.Repository;
 
-namespace Hsc.SqlRepository.Meta
+namespace Hsc.SqlRepository.Knowledge
 {
     public interface ISqlEntityTypeRepository : IEntityTypeRepository
     {

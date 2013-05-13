@@ -61,23 +61,23 @@
     <Compile Include="HardcodedConnectionProvider.cs" />
     <Compile Include="DataTypeConverter.cs" />
     <Compile Include="IDataTypeConverter.cs" />
-    <Compile Include="Instance\AttributeRepository.cs" />
-    <Compile Include="Instance\ISqlAttributeRepository.cs" />
-    <Compile Include="Instance\ISqlEntityRepository.cs" />
+    <Compile Include="Operation\AttributeRepository.cs" />
+    <Compile Include="Operation\ISqlAttributeRepository.cs" />
+    <Compile Include="Operation\ISqlEntityRepository.cs" />
     <Compile Include="ISqlRepository.cs" />
-    <Compile Include="Meta\EntityAttributeTypeRepository.cs" />
-    <Compile Include="Meta\EntityTypeRepository.cs" />
+    <Compile Include="Knowledge\EntityAttributeTypeRepository.cs" />
+    <Compile Include="Knowledge\SqlEntityTypeRepository.cs" />
     <Compile Include="IConnectionProvider.cs" />
-    <Compile Include="Meta\IEntityAttributeTypeRepository.cs" />
-    <Compile Include="Meta\ISqlAttributeTypeRepository.cs" />
-    <Compile Include="Meta\ISqlEntityTypeRepository.cs" />
+    <Compile Include="Knowledge\IEntityAttributeTypeRepository.cs" />
+    <Compile Include="Knowledge\ISqlAttributeTypeRepository.cs" />
+    <Compile Include="Knowledge\ISqlEntityTypeRepository.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Meta\AttributeTypeRepository.cs" />
-    <Compile Include="Instance\EntityRepository.cs" />
+    <Compile Include="Knowledge\AttributeTypeRepository.cs" />
+    <Compile Include="Operation\SqlEntityRepository.cs" />
     <Compile Include="TypeConverter.cs" />
     <Compile Include="SqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

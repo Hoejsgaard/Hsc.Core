@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Hsc.Model.Knowledge;
 using Hsc.Repository;
 
-namespace Hsc.SqlRepository.Meta
+namespace Hsc.SqlRepository.Knowledge
 {
     public interface ISqlAttributeTypeRepository
     {

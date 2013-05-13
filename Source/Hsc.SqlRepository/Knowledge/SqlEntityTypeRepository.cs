@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using Hsc.Model.Knowledge;
 
-namespace Hsc.SqlRepository.Meta
+namespace Hsc.SqlRepository.Knowledge
 {
-    public class EntityTypeRepository : ISqlEntityTypeRepository
+    public class SqlEntityTypeRepository : ISqlEntityTypeRepository
     {
         private readonly IConnectionProvider _connectionProvider;
         private readonly ISqlAttributeTypeRepository _sqlAttributeTypeRepository;
 
-        public EntityTypeRepository(IConnectionProvider connectionProvider,
+        public SqlEntityTypeRepository(IConnectionProvider connectionProvider,
                                     ISqlAttributeTypeRepository sqlAttributeTypeRepository)
         {
             _connectionProvider = connectionProvider;
@@ -56,7 +56,7 @@ namespace Hsc.SqlRepository.Meta
             {
                 using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
-                    sqlCommand.CommandText = string.Format("SELECT * FROM exm.EntityTypes WHERE Name='{0}'", name);
+                    sqlCommand.CommandText = string.Format("SELECT * FROM hsck.EntityTypes WHERE Name='{0}'", name);
                     using (SqlDataReader reader = sqlCommand.ExecuteReader())
                     {
                         reader.Read();
@@ -78,7 +78,7 @@ namespace Hsc.SqlRepository.Meta
             {
                 using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
-                    sqlCommand.CommandText = "SELECT * FROM exm.EntityTypes";
+                    sqlCommand.CommandText = "SELECT * FROM hsck.EntityTypes";
                     using (SqlDataReader reader = sqlCommand.ExecuteReader())
                     {
                         while (reader.Read())
@@ -104,7 +104,7 @@ namespace Hsc.SqlRepository.Meta
             {
                 using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
-                    sqlCommand.CommandText = "CREATE TABLE exm.EntityTypes " +
+                    sqlCommand.CommandText = "CREATE TABLE hsck.EntityTypes " +
                                              "(Id int PRIMARY KEY CLUSTERED IDENTITY(1,1), " +
                                              "Name varchar(255) NOT NULL UNIQUE)";
                     sqlCommand.ExecuteNonQuery();
@@ -119,7 +119,7 @@ namespace Hsc.SqlRepository.Meta
             {
                 using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
-                    sqlCommand.CommandText = string.Format("SELECT * FROM exm.EntityTypes WHERE Id='{0}'", id);
+                    sqlCommand.CommandText = string.Format("SELECT * FROM hsck.EntityTypes WHERE Id='{0}'", id);
                     using (SqlDataReader reader = sqlCommand.ExecuteReader())
                     {
                         reader.Read();
@@ -141,12 +141,12 @@ namespace Hsc.SqlRepository.Meta
 
         private string GetInsertMetaInstanceQuery(string name)
         {
-            return string.Format("INSERT INTO exm.EntityTypes (Name) OUTPUT inserted.Id VALUES ('{0}')", name);
+            return string.Format("INSERT INTO hsck.EntityTypes (Name) OUTPUT inserted.Id VALUES ('{0}')", name);
         }
 
         private string GetCreateInstanceTableQuery(string name)
         {
-            return string.Format("CREATE TABLE exi.{0} (Id int PRIMARY KEY CLUSTERED IDENTITY(1,1))", name);
+            return string.Format("CREATE TABLE hsco.{0} (Id int PRIMARY KEY CLUSTERED IDENTITY(1,1))", name);
         }
 
         #endregion

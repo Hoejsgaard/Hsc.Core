@@ -1,4 +1,4 @@
-﻿namespace Hsc.SqlRepository.Instance
+﻿namespace Hsc.SqlRepository.Operation
 {
     internal class AttributeRepository
     {

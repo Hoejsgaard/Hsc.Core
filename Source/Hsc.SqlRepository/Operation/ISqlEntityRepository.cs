@@ -1,6 +1,6 @@
 using Hsc.Repository;
 
-namespace Hsc.SqlRepository.Instance
+namespace Hsc.SqlRepository.Operation
 {
     public interface ISqlEntityRepository : IEntityRepository
     {

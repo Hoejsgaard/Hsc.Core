@@ -2,7 +2,7 @@
 using Hsc.Model.Knowledge;
 using Hsc.Repository;
 
-namespace Hsc.SqlRepository.Meta
+namespace Hsc.SqlRepository.Knowledge
 {
     public class EntityAttributeTypeRepository : IEntityAttributeTypeRepository
     {
@@ -38,7 +38,7 @@ namespace Hsc.SqlRepository.Meta
                 {
                     sqlCommand.CommandText =
                         string.Format(
-                            "SELECT * FROM exm.EntityAttributeTypes WHERE ParentEntityTypeName='{0}'",
+                            "SELECT * FROM hsck.EntityAttributeTypes WHERE ParentEntityTypeName='{0}'",
                             entityType.Name);
                     using (SqlDataReader reader = sqlCommand.ExecuteReader())
                     {
@@ -72,7 +72,7 @@ namespace Hsc.SqlRepository.Meta
                 {
                     sqlCommand.CommandText =
                         string.Format(
-                            "INSERT INTO exm.EntityAttributeTypes (Name, ChildEntityTypeName, ParentEntityTypeName)" +
+                            "INSERT INTO hsck.EntityAttributeTypes (Name, ChildEntityTypeName, ParentEntityTypeName)" +
                             "VALUES ('{0}', '{1}', '{2}')",
                             entityAttributeType.Name,
                             entityAttributeType.OfType.Name,
@@ -81,7 +81,7 @@ namespace Hsc.SqlRepository.Meta
                 }
                 using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
-                    sqlCommand.CommandText = string.Format("ALTER TABLE exi.{0} ADD {1} {2}",
+                    sqlCommand.CommandText = string.Format("ALTER TABLE hsco.{0} ADD {1} {2}",
                                                            onEntity.Name,
                                                            entityAttributeType.Name,
                                                            _dataTypeConverter.ToSqlType(DataType.Entity));
@@ -98,13 +98,13 @@ namespace Hsc.SqlRepository.Meta
             {
                 using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
-                    sqlCommand.CommandText = "CREATE TABLE exm.EntityAttributeTypes " +
+                    sqlCommand.CommandText = "CREATE TABLE hsck.EntityAttributeTypes " +
                                              "(Id int PRIMARY KEY CLUSTERED IDENTITY(1,1)," +
                                              "Name varchar(255) NOT NULL, " +
                                              "ChildEntityTypeName varchar(255) NOT NULL, " +
                                              "ParentEntityTypeName varchar(255) NOT NULL," +
-                                             "FOREIGN KEY (ChildEntityTypeName) references exm.EntityTypes (Name)," +
-                                             "FOREIGN KEY (ParentEntityTypeName) references exm.EntityTypes (Name))";
+                                             "FOREIGN KEY (ChildEntityTypeName) references hsck.EntityTypes (Name)," +
+                                             "FOREIGN KEY (ParentEntityTypeName) references hsck.EntityTypes (Name))";
                     sqlCommand.ExecuteNonQuery();
                 }
             }

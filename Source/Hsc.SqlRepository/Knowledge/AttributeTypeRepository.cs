@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using Hsc.Model.Knowledge;
 using Hsc.Repository;
 
-namespace Hsc.SqlRepository.Meta
+namespace Hsc.SqlRepository.Knowledge
 {
     public class AttributeTypeRepository : ISqlAttributeTypeRepository
     {
@@ -32,7 +32,7 @@ namespace Hsc.SqlRepository.Meta
             {
                 using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
-                    sqlCommand.CommandText = string.Format("SELECT * FROM exm.AttributeTypes WHERE EntityTypeId='{0}'", entityType.Id);
+                    sqlCommand.CommandText = string.Format("SELECT * FROM hsck.AttributeTypes WHERE EntityTypeId='{0}'", entityType.Id);
                     using (SqlDataReader reader = sqlCommand.ExecuteReader())
                     {
                         while (reader.Read())
@@ -84,12 +84,12 @@ namespace Hsc.SqlRepository.Meta
             {
                 using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
-                    sqlCommand.CommandText = "CREATE TABLE exm.AttributeTypes " +
+                    sqlCommand.CommandText = "CREATE TABLE hsck.AttributeTypes " +
                                              "(Id int PRIMARY KEY CLUSTERED IDENTITY(1,1), " +
                                              "Name varchar(255) NOT NULL," +
                                              "DataType varchar(255) NOT NULL," +
                                              "EntityTypeId int NOT NULL," +
-                                             "FOREIGN KEY (EntityTypeId) references exm.EntityTypes (Id))";
+                                             "FOREIGN KEY (EntityTypeId) references hsck.EntityTypes (Id))";
                     sqlCommand.ExecuteNonQuery();
                 }
             }
@@ -110,7 +110,7 @@ namespace Hsc.SqlRepository.Meta
                 using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
                     sqlCommand.CommandText =
-                        string.Format("INSERT INTO exm.AttributeTypes (Name, DataType, EntityTypeId) " +
+                        string.Format("INSERT INTO hsck.AttributeTypes (Name, DataType, EntityTypeId) " +
                                       "VALUES ('{0}', '{1}', {2})",
                                       attributeType.Name,
                                       attributeType.DataType,
@@ -119,7 +119,7 @@ namespace Hsc.SqlRepository.Meta
                 }
                 using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
-                    sqlCommand.CommandText = string.Format("ALTER TABLE exi.{0} ADD {1} {2}",
+                    sqlCommand.CommandText = string.Format("ALTER TABLE hsco.{0} ADD {1} {2}",
                                                            onEntity.Name,
                                                            attributeType.Name,
                                                            _dataTypeConverter.ToSqlType(attributeType.DataType));
