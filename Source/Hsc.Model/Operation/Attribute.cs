@@ -3,7 +3,6 @@ using Hsc.Model.Knowledge;
 
 namespace Hsc.Model.Operation
 {
-    [DataContract]
     public class Attribute
     {
         private object _value;
@@ -19,13 +18,10 @@ namespace Hsc.Model.Operation
             //serialization
         }
 
-        [DataMember]
         public AttributeType AttributeType { get; private set; }
 
-        [DataMember]
         public string Name { get; private set; }
 
-        [DataMember]
         public object Value
         {
             get { return _value; }

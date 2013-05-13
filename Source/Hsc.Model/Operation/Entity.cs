@@ -1,5 +1,4 @@
 ﻿using Hsc.Model.Knowledge;
-using ServiceStack.DataAnnotations;
 
 namespace Hsc.Model.Operation
 {
@@ -21,8 +20,6 @@ namespace Hsc.Model.Operation
             // for serialization
         }
 
-        [Alias("EntityId")]
-        [AutoIncrement]
         public int Id { get; set; }
 
         public EntityType EntityType { get; private set; }
