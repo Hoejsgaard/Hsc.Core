@@ -25,13 +25,13 @@ namespace Hsc.SqlRepository.Knowledge
             {
                 using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
-                    sqlCommand.CommandText = GetInsertMetaInstanceQuery(entityType.Name);
+                    sqlCommand.CommandText = GetInsertKnowledgeQuery(entityType.Name);
                     var id = (int) sqlCommand.ExecuteScalar();
                     entityType.Id = id;
                 }
                 using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
                 {
-                    sqlCommand.CommandText = GetCreateInstanceTableQuery(entityType.Name);
+                    sqlCommand.CommandText = GetCreateOperationTableQuery(entityType.Name);
                     sqlCommand.ExecuteNonQuery();
                 }
 
@@ -139,12 +139,12 @@ namespace Hsc.SqlRepository.Knowledge
         {
         }
 
-        private string GetInsertMetaInstanceQuery(string name)
+        private string GetInsertKnowledgeQuery(string name)
         {
             return string.Format("INSERT INTO hsck.EntityTypes (Name) OUTPUT inserted.Id VALUES ('{0}')", name);
         }
 
-        private string GetCreateInstanceTableQuery(string name)
+        private string GetCreateOperationTableQuery(string name)
         {
             return string.Format("CREATE TABLE hsco.{0} (Id int PRIMARY KEY CLUSTERED IDENTITY(1,1))", name);
         }

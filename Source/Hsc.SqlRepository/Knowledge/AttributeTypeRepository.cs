@@ -67,7 +67,6 @@ namespace Hsc.SqlRepository.Knowledge
             CreateValueAttribute(attributeType, onEntity);
         }
 
-
         public List<AttributeType> ReadAll()
         {
             throw new NotImplementedException();

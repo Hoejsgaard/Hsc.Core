@@ -36,8 +36,8 @@ namespace Hsc.SqlRepository
         {
             using (SqlConnection connection = _connectionProvider.GetConnection())
             {
-                CreateMetaSchema(connection);
-                CreateInstanceSchema(connection);
+                CreateKnowledgeSchema(connection);
+                CreateOperationSchema(connection);
                 _entityTypeRepository.CreateTable();
                 _attributeTypeRepository.CreateTable();
                 _entityAttributeTypeRepository.CreateTable();
@@ -76,7 +76,7 @@ namespace Hsc.SqlRepository
             _entityRepository.Create(nina);
         }
 
-        private void CreateMetaSchema(SqlConnection sqlConnection)
+        private void CreateKnowledgeSchema(SqlConnection sqlConnection)
         {
             using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
             {
@@ -88,7 +88,7 @@ namespace Hsc.SqlRepository
             }
         }
 
-        private void CreateInstanceSchema(SqlConnection sqlConnection)
+        private void CreateOperationSchema(SqlConnection sqlConnection)
         {
             using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
             {
